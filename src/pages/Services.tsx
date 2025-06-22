@@ -15,7 +15,8 @@ import {
   Bug,
   TrendingUp,
   CreditCard,
-  ArrowRight
+  ArrowRight,
+  Leaf
 } from 'lucide-react';
 
 const Services = () => {
