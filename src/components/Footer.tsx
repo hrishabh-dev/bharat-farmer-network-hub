@@ -27,8 +27,16 @@ const Footer = () => {
               </div>
               <div className="flex items-center space-x-2">
                 <MapPin className="h-4 w-4 text-green-400" />
-                <span className="text-sm">New Delhi, India</span>
+                <span className="text-sm">Phulpur, Prayagraj, India</span>
               </div>
+            </div>
+            <div className="mt-4 pt-4 border-t border-gray-800">
+              <p className="text-sm text-gray-400">
+                <strong>Ranvijay Digital Marketing and Information Technology</strong>
+              </p>
+              <p className="text-sm text-gray-400">
+                Akriti - CEO and Marketing Manager
+              </p>
             </div>
           </div>
 

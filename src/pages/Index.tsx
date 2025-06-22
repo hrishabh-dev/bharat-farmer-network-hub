@@ -251,12 +251,12 @@ const Index = () => {
           <h2 className="text-3xl md:text-4xl font-bold mb-6">
             Join the Agricultural Revolution
           </h2>
-          <p className="text-xl mb-8 opacity-90">
+          <p className="text-xl mb-8 text-gray-300">
             Whether you're a farmer, partner, or investor, there's a place for you in our mission to transform Indian agriculture.
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" className="bg-green-600 hover:bg-green-700" asChild>
+            <Button size="lg" className="bg-green-600 hover:bg-green-700 text-white" asChild>
               <Link to="/for-farmers">I'm a Farmer</Link>
             </Button>
             <Button size="lg" variant="outline" className="text-white border-white hover:bg-white hover:text-gray-900" asChild>
