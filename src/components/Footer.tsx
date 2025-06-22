@@ -37,6 +37,9 @@ const Footer = () => {
               <p className="text-sm text-gray-400">
                 Akriti - CEO and Marketing Manager
               </p>
+              <p className="text-sm text-gray-400">
+                Harsh - Advisor and CA
+              </p>
             </div>
           </div>
 
