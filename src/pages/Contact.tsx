@@ -1,4 +1,3 @@
-
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Card, CardContent } from '@/components/ui/card';
@@ -21,23 +20,23 @@ const Contact = () => {
   const contactMethods = [
     {
       icon: Phone,
-      title: 'Phone Support',
+      title: 'Phone & WhatsApp',
       description: 'Speak directly with our team',
-      contact: '+91 98765 43210',
+      contact: '+91 8874443283',
       availability: 'Mon-Sat, 9 AM - 7 PM'
     },
     {
       icon: Mail,
       title: 'Email Support',
       description: 'Send us your queries anytime',
-      contact: 'info@kisanmitra.in',
+      contact: 'ranvijayprksh@gmail.com',
       availability: 'We respond within 24 hours'
     },
     {
       icon: MessageCircle,
       title: 'WhatsApp',
       description: 'Quick support via WhatsApp',
-      contact: '+91 98765 43210',
+      contact: '+91 8874443283',
       availability: 'Available 24/7'
     },
     {
@@ -59,20 +58,20 @@ const Contact = () => {
     {
       icon: Users,
       title: 'Farmer Support',
-      email: 'farmers@kisanmitra.in',
+      email: 'ranvijayprksh@gmail.com',
       description: 'Agricultural guidance and technical support'
     },
     {
       icon: Building,
       title: 'Partnerships',
-      email: 'partnerships@kisanmitra.in',
+      email: 'ranvijayprksh@gmail.com',
       description: 'Collaboration and partnership inquiries'
     },
     {
       icon: Headphones,
       title: 'Technical Support',
-      email: 'support@kisanmitra.in',
-      description: 'App issues and technical assistance'
+      email: 'ranvijayprksh@gmail.com',
+      description: 'Web platform issues and technical assistance'
     }
   ];
 
@@ -167,7 +166,7 @@ const Contact = () => {
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       Phone Number
                     </label>
-                    <Input placeholder="+91 98765 43210" />
+                    <Input placeholder="+91 8874443283" />
                   </div>
                   
                   <div>
@@ -281,7 +280,7 @@ const Contact = () => {
                   <span className="font-medium text-green-800">Emergency Support</span>
                 </div>
                 <p className="text-green-700 text-sm">
-                  For urgent agricultural emergencies, farmers can reach us 24/7 via WhatsApp
+                  For urgent agricultural emergencies, farmers can reach us 24/7 via WhatsApp at +91 8874443283
                 </p>
               </div>
             </div>

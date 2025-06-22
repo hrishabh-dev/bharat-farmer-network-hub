@@ -5,8 +5,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import { 
-  Smartphone, 
-  Download, 
+  Globe, 
   Phone, 
   MessageCircle,
   HelpCircle,
@@ -42,7 +41,7 @@ const ForFarmers = () => {
     {
       icon: CheckCircle2,
       title: 'Community Support',
-      description: 'Connect with fellow farmers, share experiences, an learn from each other.'
+      description: 'Connect with fellow farmers, share experiences, and learn from each other.'
     },
     {
       icon: CheckCircle2,
@@ -54,9 +53,9 @@ const ForFarmers = () => {
   const steps = [
     {
       number: '1',
-      title: 'Download Our App',
-      description: 'Get the Kisan Mitra mobile app from Google Play Store or contact our support team.',
-      icon: Download
+      title: 'Visit Our Website',
+      description: 'Access all our services directly through our web platform - no app needed!',
+      icon: Globe
     },
     {
       number: '2',
@@ -84,12 +83,12 @@ const ForFarmers = () => {
       answer: 'Yes, basic services are free. Some premium features like detailed market analysis may have minimal charges.'
     },
     {
-      question: 'Do I need a smartphone to use Kisan Mitra?',
-      answer: 'While our mobile app provides the best experience, you can also access services through SMS and voice calls.'
+      question: 'Do I need to download an app?',
+      answer: 'No! Our complete platform is available through your web browser. Just visit our website on any device.'
     },
     {
-      question: 'What languages is the app available in?',
-      answer: 'Our app supports Hindi, English, and major regional languages including Punjabi, Marathi, Gujarati, and Tamil.'
+      question: 'What languages is the platform available in?',
+      answer: 'Our platform supports Hindi, English, and major regional languages including Punjabi, Marathi, Gujarati, and Tamil.'
     },
     {
       question: 'How do I get weather alerts for my area?',
@@ -118,9 +117,11 @@ const ForFarmers = () => {
               </p>
               
               <div className="flex flex-col sm:flex-row gap-4">
-                <Button size="lg" className="bg-green-600 hover:bg-green-700">
-                  <Download className="mr-2 h-5 w-5" />
-                  Download App
+                <Button size="lg" className="bg-green-600 hover:bg-green-700" asChild>
+                  <Link to="/services">
+                    <Globe className="mr-2 h-5 w-5" />
+                    Access Our Platform
+                  </Link>
                 </Button>
                 <Button size="lg" variant="outline" asChild>
                   <Link to="/contact">
@@ -208,25 +209,27 @@ const ForFarmers = () => {
           </div>
           
           <div className="text-center mt-12">
-            <Button size="lg" className="bg-green-600 hover:bg-green-700">
-              <Download className="mr-2 h-5 w-5" />
-              Start Your Journey Today
+            <Button size="lg" className="bg-green-600 hover:bg-green-700" asChild>
+              <Link to="/services">
+                <Globe className="mr-2 h-5 w-5" />
+                Start Your Journey Today
+              </Link>
             </Button>
           </div>
         </div>
       </section>
 
-      {/* App Features */}
+      {/* Web Platform Features */}
       <section className="py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
               <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
-                Kisan Mitra Mobile App
+                Kisan Mitra Web Platform
               </h2>
               <p className="text-lg text-gray-600 mb-6">
-                Our user-friendly mobile app puts all agricultural services at your fingertips. 
-                Available in multiple regional languages for easy access.
+                Our comprehensive web platform puts all agricultural services at your fingertips. 
+                Access from any device with internet - no downloads required!
               </p>
               
               <div className="space-y-4">
@@ -249,16 +252,18 @@ const ForFarmers = () => {
               </div>
               
               <div className="mt-8">
-                <Button size="lg" className="bg-green-600 hover:bg-green-700">
-                  <Smartphone className="mr-2 h-5 w-5" />
-                  Download for Android
+                <Button size="lg" className="bg-green-600 hover:bg-green-700" asChild>
+                  <Link to="/services">
+                    <Globe className="mr-2 h-5 w-5" />
+                    Access Web Platform
+                  </Link>
                 </Button>
               </div>
             </div>
             
             <div className="text-center">
               <div className="bg-gray-900 rounded-3xl p-8 inline-block">
-                <Smartphone className="h-32 w-32 text-green-400 mx-auto" />
+                <Globe className="h-32 w-32 text-green-400 mx-auto" />
               </div>
             </div>
           </div>
@@ -313,13 +318,13 @@ const ForFarmers = () => {
             <div className="bg-white/10 rounded-lg p-6">
               <Phone className="h-8 w-8 mx-auto mb-3" />
               <h3 className="font-semibold mb-2">Call Us</h3>
-              <p className="text-sm opacity-90">+91 98765 43210</p>
+              <p className="text-sm opacity-90">+91 8874443283</p>
             </div>
             
             <div className="bg-white/10 rounded-lg p-6">
               <MessageCircle className="h-8 w-8 mx-auto mb-3" />
               <h3 className="font-semibold mb-2">WhatsApp</h3>
-              <p className="text-sm opacity-90">Available 24/7</p>
+              <p className="text-sm opacity-90">+91 8874443283</p>
             </div>
             
             <div className="bg-white/10 rounded-lg p-6">
