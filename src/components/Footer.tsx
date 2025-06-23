@@ -19,11 +19,23 @@ const Footer = () => {
             <div className="space-y-2">
               <div className="flex items-center space-x-2">
                 <Mail className="h-4 w-4 text-green-400" />
-                <span className="text-sm">ranvijayprksh@gmail.com</span>
+                <a 
+                  href="mailto:ranvijayprksh@gmail.com" 
+                  className="text-sm hover:text-green-400 transition-colors"
+                >
+                  ranvijayprksh@gmail.com
+                </a>
               </div>
               <div className="flex items-center space-x-2">
                 <Phone className="h-4 w-4 text-green-400" />
-                <span className="text-sm">+91 8874443283 (WhatsApp)</span>
+                <a 
+                  href="https://wa.me/918874443283" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-sm hover:text-green-400 transition-colors"
+                >
+                  +91 8874443283 (WhatsApp)
+                </a>
               </div>
               <div className="flex items-center space-x-2">
                 <MapPin className="h-4 w-4 text-green-400" />
@@ -39,6 +51,9 @@ const Footer = () => {
               </p>
               <p className="text-sm text-gray-400">
                 Harsh - Advisor and CA
+              </p>
+              <p className="text-sm text-gray-400">
+                Afsha - Lab Director
               </p>
             </div>
           </div>
