@@ -1,7 +1,7 @@
 
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Wheat } from 'lucide-react';
+import { Menu, X, Wheat, LogIn } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const Header = () => {
@@ -48,6 +48,16 @@ const Header = () => {
             ))}
           </nav>
 
+          {/* Login Button - Desktop */}
+          <div className="hidden md:flex items-center space-x-4">
+            <Link to="/login">
+              <Button variant="outline" size="sm" className="border-green-600 text-green-600 hover:bg-green-50">
+                <LogIn className="h-4 w-4 mr-2" />
+                Login
+              </Button>
+            </Link>
+          </div>
+
           {/* Mobile menu button */}
           <div className="md:hidden">
             <Button
@@ -82,6 +92,14 @@ const Header = () => {
                   {item.name}
                 </Link>
               ))}
+              <Link
+                to="/login"
+                className="block px-3 py-2 text-base font-medium text-green-600 hover:bg-green-50 rounded-md"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                <LogIn className="h-4 w-4 mr-2 inline" />
+                Login
+              </Link>
             </div>
           </div>
         )}

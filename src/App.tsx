@@ -12,6 +12,7 @@ import ForFarmers from "./pages/ForFarmers";
 import Partnerships from "./pages/Partnerships";
 import Investors from "./pages/Investors";
 import Contact from "./pages/Contact";
+import Login from "./pages/Login";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -31,6 +32,7 @@ const App = () => (
           <Route path="/partnerships" element={<Partnerships />} />
           <Route path="/investors" element={<Investors />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/login" element={<Login />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

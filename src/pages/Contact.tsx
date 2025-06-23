@@ -44,7 +44,7 @@ const Contact = () => {
       title: 'Office Address',
       description: 'Visit us at our headquarters',
       contact: 'Kisan Mitra Technologies Pvt. Ltd.',
-      availability: 'New Delhi, India 110001'
+      availability: 'Phulpur, Prayagraj, India'
     }
   ];
 
@@ -295,9 +295,8 @@ const Contact = () => {
                   <div>
                     <p className="font-medium text-gray-900">Kisan Mitra Technologies Pvt. Ltd.</p>
                     <p className="text-gray-600">
-                      123 Agricultural Innovation Hub<br />
-                      Connaught Place, New Delhi<br />
-                      Delhi 110001, India
+                      Phulpur, Prayagraj<br />
+                      Uttar Pradesh, India
                     </p>
                   </div>
                 </div>
@@ -307,7 +306,7 @@ const Contact = () => {
                 <div className="text-center text-gray-500">
                   <MapPin className="h-12 w-12 mx-auto mb-2" />
                   <p>Interactive Map</p>
-                  <p className="text-sm">Visit us at our New Delhi office</p>
+                  <p className="text-sm">Visit us at our Phulpur office</p>
                 </div>
               </div>
             </div>
@@ -358,7 +357,7 @@ const Contact = () => {
                   Can I visit your office?
                 </h3>
                 <p className="text-gray-600">
-                  Absolutely! We welcome visitors to our New Delhi office. Please call ahead to schedule 
+                  Absolutely! We welcome visitors to our Phulpur, Prayagraj office. Please call ahead to schedule 
                   an appointment so we can ensure someone is available to meet with you.
                 </p>
               </CardContent>
