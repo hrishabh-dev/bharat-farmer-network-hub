@@ -1,4 +1,3 @@
-
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Card, CardContent } from '@/components/ui/card';
@@ -102,24 +101,24 @@ const Investors = () => {
       <Header />
       
       {/* Hero Section */}
-      <section className="py-16 bg-gradient-to-br from-blue-50 via-white to-green-50">
+      <section className="py-12 md:py-16 bg-gradient-to-br from-blue-50 via-white to-green-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
             <div>
-              <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+              <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4 md:mb-6">
                 Investment Opportunity
               </h1>
-              <p className="text-xl text-gray-600 mb-8">
+              <p className="text-lg md:text-xl text-gray-600 mb-6 md:mb-8">
                 Kisan Mitra offers a unique investment opportunity to transform Indian agriculture 
                 while generating sustainable returns through our proven, scalable platform.
               </p>
               
               <div className="flex flex-col sm:flex-row gap-4">
-                <Button size="lg" className="bg-green-600 hover:bg-green-700">
+                <Button size="lg" className="bg-green-600 hover:bg-green-700 w-full sm:w-auto">
                   Request Investment Deck
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
-                <Button size="lg" variant="outline">
+                <Button size="lg" variant="outline" className="w-full sm:w-auto">
                   Schedule Meeting
                 </Button>
               </div>
@@ -129,7 +128,7 @@ const Investors = () => {
               <img 
                 src="https://images.unsplash.com/photo-1493962853295-0fd70327578a?w=600&h=400&fit=crop" 
                 alt="Agricultural investment opportunity" 
-                className="rounded-2xl shadow-lg w-full h-80 object-cover"
+                className="rounded-2xl shadow-lg w-full h-64 md:h-80 object-cover"
               />
             </div>
           </div>
@@ -137,25 +136,25 @@ const Investors = () => {
       </section>
 
       {/* Market Opportunity */}
-      <section className="py-16">
+      <section className="py-12 md:py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+          <div className="text-center mb-8 md:mb-12">
+            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
               Market Opportunity
             </h2>
-            <p className="text-xl text-gray-600">
+            <p className="text-lg md:text-xl text-gray-600">
               Compelling numbers that demonstrate the scale and potential of our market
             </p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {opportunities.map((opportunity, index) => (
               <Card key={index} className="text-center hover:shadow-lg transition-shadow duration-300">
                 <CardContent className="p-6">
                   <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
                     <opportunity.icon className="h-8 w-8 text-green-600" />
                   </div>
-                  <div className="text-3xl font-bold text-gray-900 mb-2">
+                  <div className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
                     {opportunity.value}
                   </div>
                   <h3 className="text-lg font-semibold text-gray-900 mb-2">
@@ -172,18 +171,18 @@ const Investors = () => {
       </section>
 
       {/* USP Section */}
-      <section className="py-16 bg-gray-50">
+      <section className="py-12 md:py-16 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+          <div className="text-center mb-8 md:mb-12">
+            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
               Why Invest in Kisan Mitra?
             </h2>
-            <p className="text-xl text-gray-600">
+            <p className="text-lg md:text-xl text-gray-600">
               Our unique value propositions that set us apart in the agricultural technology space
             </p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
             {usps.map((usp, index) => (
               <Card key={index} className="hover:shadow-lg transition-shadow duration-300">
                 <CardContent className="p-6">
@@ -192,7 +191,7 @@ const Investors = () => {
                       <usp.icon className="h-6 w-6 text-blue-600" />
                     </div>
                     <div>
-                      <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                      <h3 className="text-lg md:text-xl font-semibold text-gray-900 mb-2">
                         {usp.title}
                       </h3>
                       <p className="text-gray-600">
@@ -208,22 +207,22 @@ const Investors = () => {
       </section>
 
       {/* Financial Metrics */}
-      <section className="py-16">
+      <section className="py-12 md:py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+          <div className="text-center mb-8 md:mb-12">
+            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
               Key Performance Metrics
             </h2>
-            <p className="text-xl text-gray-600">
+            <p className="text-lg md:text-xl text-gray-600">
               Strong fundamentals demonstrating sustainable growth and market traction
             </p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {financials.map((financial, index) => (
               <Card key={index} className="text-center hover:shadow-lg transition-shadow duration-300">
                 <CardContent className="p-6">
-                  <div className="text-3xl font-bold text-blue-600 mb-2">
+                  <div className="text-2xl md:text-3xl font-bold text-blue-600 mb-2">
                     {financial.value}
                   </div>
                   <h3 className="text-lg font-semibold text-gray-900 mb-1">
@@ -243,24 +242,24 @@ const Investors = () => {
       </section>
 
       {/* Investment Thesis */}
-      <section className="py-16 bg-gradient-to-r from-green-600 to-blue-600 text-white">
+      <section className="py-12 md:py-16 bg-gradient-to-r from-green-600 to-blue-600 text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+          <div className="text-center mb-8 md:mb-12">
+            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-4">
               Join Us in Transforming Rural India
             </h2>
-            <p className="text-xl opacity-90 max-w-3xl mx-auto">
+            <p className="text-lg md:text-xl opacity-90 max-w-3xl mx-auto">
               Partner with us to create lasting impact while building a sustainable, 
               high-growth business in one of the world's largest agricultural markets.
             </p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 text-center">
             <div>
               <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4">
                 <DollarSign className="h-8 w-8" />
               </div>
-              <h3 className="text-xl font-bold mb-2">Strong Returns</h3>
+              <h3 className="text-lg md:text-xl font-bold mb-2">Strong Returns</h3>
               <p className="opacity-90">Sustainable revenue model with multiple monetization streams</p>
             </div>
             
@@ -268,7 +267,7 @@ const Investors = () => {
               <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4">
                 <Target className="h-8 w-8" />
               </div>
-              <h3 className="text-xl font-bold mb-2">Social Impact</h3>
+              <h3 className="text-lg md:text-xl font-bold mb-2">Social Impact</h3>
               <p className="opacity-90">Direct positive impact on millions of farming families across India</p>
             </div>
             
@@ -276,7 +275,7 @@ const Investors = () => {
               <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4">
                 <BarChart3 className="h-8 w-8" />
               </div>
-              <h3 className="text-xl font-bold mb-2">Scalable Platform</h3>
+              <h3 className="text-lg md:text-xl font-bold mb-2">Scalable Platform</h3>
               <p className="opacity-90">Technology-driven approach enabling rapid expansion and growth</p>
             </div>
           </div>
@@ -284,19 +283,19 @@ const Investors = () => {
       </section>
 
       {/* Investment Inquiry */}
-      <section className="py-16 bg-gray-50">
+      <section className="py-12 md:py-16 bg-gray-50">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+          <div className="text-center mb-8 md:mb-12">
+            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
               Investment Inquiry
             </h2>
-            <p className="text-xl text-gray-600">
+            <p className="text-lg md:text-xl text-gray-600">
               Interested in learning more? Get in touch with our investor relations team.
             </p>
           </div>
           
           <Card className="hover:shadow-lg transition-shadow duration-300">
-            <CardContent className="p-8">
+            <CardContent className="p-6 md:p-8">
               <form className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
@@ -369,7 +368,7 @@ const Investors = () => {
                 </div>
                 
                 <div className="text-center">
-                  <Button size="lg" className="bg-green-600 hover:bg-green-700">
+                  <Button size="lg" className="bg-green-600 hover:bg-green-700 w-full sm:w-auto">
                     <Mail className="mr-2 h-5 w-5" />
                     Submit Investment Inquiry
                   </Button>
@@ -381,20 +380,25 @@ const Investors = () => {
       </section>
 
       {/* Contact Information */}
-      <section className="py-16">
+      <section className="py-12 md:py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
+          <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-4 md:mb-6">
             Ready to Discuss Investment?
           </h2>
-          <p className="text-xl text-gray-600 mb-8">
+          <p className="text-lg md:text-xl text-gray-600 mb-6 md:mb-8">
             Our investor relations team is ready to provide detailed information and answer your questions.
           </p>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6 md:mb-8">
             <div className="text-center">
               <Mail className="h-8 w-8 text-green-600 mx-auto mb-2" />
               <h3 className="font-semibold text-gray-900">Email</h3>
-              <p className="text-gray-600">investors@kisanmitra.in</p>
+              <a 
+                href="mailto:ranvijayprksh@gmail.com" 
+                className="text-gray-600 hover:text-green-600 transition-colors"
+              >
+                ranvijayprksh@gmail.com
+              </a>
             </div>
             
             <div className="text-center">
@@ -411,10 +415,10 @@ const Investors = () => {
           </div>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" className="bg-green-600 hover:bg-green-700">
+            <Button size="lg" className="bg-green-600 hover:bg-green-700 w-full sm:w-auto">
               Request Investment Deck
             </Button>
-            <Button size="lg" variant="outline" asChild>
+            <Button size="lg" variant="outline" className="w-full sm:w-auto" asChild>
               <Link to="/contact">Schedule a Call</Link>
             </Button>
           </div>
