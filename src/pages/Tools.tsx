@@ -4,6 +4,7 @@ import Footer from '@/components/Footer';
 import WeatherWidget from '@/components/WeatherWidget';
 import QuickTools from '@/components/QuickTools';
 import CropCalendar from '@/components/CropCalendar';
+import CropRecommendation from '@/components/CropRecommendation';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Calculator, Calendar, CloudSun, BookOpen, Phone, MapPin } from 'lucide-react';
@@ -40,18 +41,19 @@ const Tools = () => {
           <p className="text-lg text-gray-600">Essential tools to help you make informed farming decisions</p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-          <div className="lg:col-span-1">
+        {/* Main Tools Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+          <div className="space-y-6">
             <WeatherWidget />
-          </div>
-          <div className="lg:col-span-1">
             <QuickTools />
           </div>
-          <div className="lg:col-span-1">
+          <div className="space-y-6">
+            <CropRecommendation />
             <CropCalendar />
           </div>
         </div>
 
+        {/* Quick Access Section */}
         <div className="mb-8">
           <h2 className="text-2xl font-bold text-gray-900 mb-4">Quick Access</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
