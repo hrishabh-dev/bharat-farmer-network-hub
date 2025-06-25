@@ -14,6 +14,8 @@ import Investors from "./pages/Investors";
 import Contact from "./pages/Contact";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
+import News from "./pages/News";
+import Tools from "./pages/Tools";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -35,6 +37,8 @@ const App = () => (
           <Route path="/contact" element={<Contact />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/news" element={<News />} />
+          <Route path="/tools" element={<Tools />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

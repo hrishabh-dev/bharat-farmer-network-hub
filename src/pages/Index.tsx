@@ -13,7 +13,8 @@ import {
   DollarSign, 
   BookOpen,
   ArrowRight,
-  CheckCircle
+  CheckCircle,
+  Calculator
 } from 'lucide-react';
 
 const Index = () => {
@@ -191,6 +192,62 @@ const Index = () => {
                 </CardContent>
               </Card>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* New Features Section */}
+      <section className="py-16 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              Essential Farming Tools
+            </h2>
+            <p className="text-xl text-gray-600">
+              Smart tools and resources to boost your farming success
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <Card className="text-center hover:shadow-lg transition-all duration-300">
+              <CardContent className="p-8">
+                <div className="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <Calculator className="h-10 w-10 text-blue-600" />
+                </div>
+                <h3 className="text-xl font-semibold text-gray-900 mb-3">
+                  Farming Tools & Calculators
+                </h3>
+                <p className="text-gray-600 mb-6">
+                  Calculate field area, seed requirements, irrigation needs, and profit estimates with our smart tools.
+                </p>
+                <Button className="bg-blue-600 hover:bg-blue-700" asChild>
+                  <Link to="/tools">
+                    Explore Tools
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </Link>
+                </Button>
+              </CardContent>
+            </Card>
+            
+            <Card className="text-center hover:shadow-lg transition-all duration-300">
+              <CardContent className="p-8">
+                <div className="w-20 h-20 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <BookOpen className="h-10 w-10 text-orange-600" />
+                </div>
+                <h3 className="text-xl font-semibold text-gray-900 mb-3">
+                  Latest Agricultural News
+                </h3>
+                <p className="text-gray-600 mb-6">
+                  Stay updated with government schemes, weather alerts, market prices, and farming innovations.
+                </p>
+                <Button className="bg-orange-600 hover:bg-orange-700" asChild>
+                  <Link to="/news">
+                    Read News
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </Link>
+                </Button>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </section>
