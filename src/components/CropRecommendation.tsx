@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
-import { Sprout, Loader2, Lock } from 'lucide-react';
+import { Sprout, Loader2, Lock, AlertCircle } from 'lucide-react';
 
 const CropRecommendation = () => {
   const [soilData, setSoilData] = useState({
@@ -18,10 +18,17 @@ const CropRecommendation = () => {
   });
   const [prediction, setPrediction] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-  const [isPremiumUser, setIsPremiumUser] = useState(false); // This would come from auth context
+  const [error, setError] = useState<string | null>(null);
+  const [isPremiumUser, setIsPremiumUser] = useState(false);
 
   const handleInputChange = (field: string, value: string) => {
     setSoilData(prev => ({ ...prev, [field]: value }));
+    setError(null); // Clear error when user starts typing
+  };
+
+  const validateInputs = () => {
+    const requiredFields = ['nitrogen', 'phosphorus', 'potassium', 'temperature', 'humidity', 'ph', 'rainfall'];
+    return requiredFields.every(field => soilData[field as keyof typeof soilData] !== '');
   };
 
   const predictCrop = async () => {
@@ -30,12 +37,27 @@ const CropRecommendation = () => {
       return;
     }
 
+    if (!validateInputs()) {
+      setError('Please fill in all soil parameters');
+      return;
+    }
+
     setLoading(true);
+    setError(null);
+    setPrediction(null);
+
     try {
+      console.log('Sending request to crop prediction API...');
+      
+      // Create a timeout for the request
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 15000); // 15 second timeout
+
       const response = await fetch('https://croppredictionapp.onrender.com/predict', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Accept': 'application/json',
         },
         body: JSON.stringify({
           N: parseFloat(soilData.nitrogen),
@@ -45,18 +67,38 @@ const CropRecommendation = () => {
           humidity: parseFloat(soilData.humidity),
           ph: parseFloat(soilData.ph),
           rainfall: parseFloat(soilData.rainfall)
-        })
+        }),
+        signal: controller.signal
       });
 
-      if (response.ok) {
-        const result = await response.json();
-        setPrediction(result.prediction || result.crop || 'No prediction available');
-      } else {
-        throw new Error('Prediction failed');
+      clearTimeout(timeoutId);
+
+      console.log('Response status:', response.status);
+
+      if (!response.ok) {
+        throw new Error(`API returned ${response.status}: ${response.statusText}`);
       }
-    } catch (error) {
+
+      const result = await response.json();
+      console.log('API response:', result);
+      
+      const cropName = result.prediction || result.crop || result.recommended_crop;
+      if (cropName) {
+        setPrediction(cropName);
+      } else {
+        throw new Error('No crop prediction found in response');
+      }
+
+    } catch (error: any) {
       console.error('Error predicting crop:', error);
-      alert('Failed to predict crop. Please try again.');
+      
+      if (error.name === 'AbortError') {
+        setError('Request timed out. The prediction service may be temporarily unavailable.');
+      } else if (error.message.includes('Failed to fetch')) {
+        setError('Unable to connect to prediction service. Please check your internet connection or try again later.');
+      } else {
+        setError(`Prediction failed: ${error.message}`);
+      }
     } finally {
       setLoading(false);
     }
@@ -107,21 +149,21 @@ const CropRecommendation = () => {
 
             <div className="grid grid-cols-2 gap-3 mb-4">
               <Input
-                placeholder="Nitrogen (N)"
+                placeholder="Nitrogen (N) - kg/ha"
                 type="number"
                 value={soilData.nitrogen}
                 onChange={(e) => handleInputChange('nitrogen', e.target.value)}
                 disabled={!isPremiumUser}
               />
               <Input
-                placeholder="Phosphorus (P)"
+                placeholder="Phosphorus (P) - kg/ha"
                 type="number"
                 value={soilData.phosphorus}
                 onChange={(e) => handleInputChange('phosphorus', e.target.value)}
                 disabled={!isPremiumUser}
               />
               <Input
-                placeholder="Potassium (K)"
+                placeholder="Potassium (K) - kg/ha"
                 type="number"
                 value={soilData.potassium}
                 onChange={(e) => handleInputChange('potassium', e.target.value)}
@@ -142,9 +184,11 @@ const CropRecommendation = () => {
                 disabled={!isPremiumUser}
               />
               <Input
-                placeholder="pH Level"
+                placeholder="pH Level (0-14)"
                 type="number"
                 step="0.1"
+                min="0"
+                max="14"
                 value={soilData.ph}
                 onChange={(e) => handleInputChange('ph', e.target.value)}
                 disabled={!isPremiumUser}
@@ -158,6 +202,13 @@ const CropRecommendation = () => {
                 className="col-span-2"
               />
             </div>
+
+            {error && (
+              <div className="bg-red-50 border border-red-200 rounded-lg p-3 mb-4 flex items-start gap-2">
+                <AlertCircle className="h-4 w-4 text-red-500 mt-0.5 flex-shrink-0" />
+                <p className="text-sm text-red-800">{error}</p>
+              </div>
+            )}
 
             <Button
               onClick={predictCrop}

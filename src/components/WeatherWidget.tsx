@@ -8,27 +8,18 @@ import { Cloud, Sun, CloudRain, Wind, Droplets, Thermometer, MapPin } from 'luci
 const WeatherWidget = () => {
   const [selectedLocation, setSelectedLocation] = useState("delhi");
   
+  // Only include locations with complete weather data
   const locations = [
     { value: "delhi", label: "Delhi", state: "Delhi" },
     { value: "mumbai", label: "Mumbai", state: "Maharashtra" },
     { value: "bangalore", label: "Bangalore", state: "Karnataka" },
     { value: "hyderabad", label: "Hyderabad", state: "Telangana" },
     { value: "pune", label: "Pune", state: "Maharashtra" },
-    { value: "ahmedabad", label: "Ahmedabad", state: "Gujarat" },
     { value: "chennai", label: "Chennai", state: "Tamil Nadu" },
     { value: "kolkata", label: "Kolkata", state: "West Bengal" },
     { value: "jaipur", label: "Jaipur", state: "Rajasthan" },
-    { value: "lucknow", label: "Lucknow", state: "Uttar Pradesh" },
-    { value: "kanpur", label: "Kanpur", state: "Uttar Pradesh" },
-    { value: "nagpur", label: "Nagpur", state: "Maharashtra" },
-    { value: "indore", label: "Indore", state: "Madhya Pradesh" },
-    { value: "thane", label: "Thane", state: "Maharashtra" },
-    { value: "bhopal", label: "Bhopal", state: "Madhya Pradesh" },
-    { value: "visakhapatnam", label: "Visakhapatnam", state: "Andhra Pradesh" },
-    { value: "pimpri", label: "Pimpri-Chinchwad", state: "Maharashtra" },
-    { value: "patna", label: "Patna", state: "Bihar" },
-    { value: "vadodara", label: "Vadodara", state: "Gujarat" },
-    { value: "ghaziabad", label: "Ghaziabad", state: "Uttar Pradesh" }
+    { value: "ahmedabad", label: "Ahmedabad", state: "Gujarat" },
+    { value: "lucknow", label: "Lucknow", state: "Uttar Pradesh" }
   ];
 
   const weatherData = {
@@ -94,6 +85,71 @@ const WeatherWidget = () => {
         { day: "Today", high: 29, low: 20, condition: "sunny" },
         { day: "Tomorrow", high: 28, low: 19, condition: "cloudy" },
         { day: "Wed", high: 27, low: 18, condition: "sunny" },
+        { day: "Thu", high: 30, low: 21, condition: "sunny" }
+      ]
+    },
+    chennai: {
+      location: "Chennai, Tamil Nadu",
+      temperature: 32,
+      condition: "Hot & Humid",
+      humidity: 75,
+      windSpeed: 14,
+      forecast: [
+        { day: "Today", high: 35, low: 27, condition: "sunny" },
+        { day: "Tomorrow", high: 34, low: 26, condition: "cloudy" },
+        { day: "Wed", high: 33, low: 25, condition: "rainy" },
+        { day: "Thu", high: 35, low: 27, condition: "sunny" }
+      ]
+    },
+    kolkata: {
+      location: "Kolkata, West Bengal",
+      temperature: 30,
+      condition: "Humid",
+      humidity: 72,
+      windSpeed: 11,
+      forecast: [
+        { day: "Today", high: 33, low: 25, condition: "cloudy" },
+        { day: "Tomorrow", high: 31, low: 24, condition: "rainy" },
+        { day: "Wed", high: 29, low: 23, condition: "rainy" },
+        { day: "Thu", high: 32, low: 25, condition: "cloudy" }
+      ]
+    },
+    jaipur: {
+      location: "Jaipur, Rajasthan",
+      temperature: 35,
+      condition: "Hot & Dry",
+      humidity: 40,
+      windSpeed: 13,
+      forecast: [
+        { day: "Today", high: 38, low: 28, condition: "sunny" },
+        { day: "Tomorrow", high: 37, low: 27, condition: "sunny" },
+        { day: "Wed", high: 36, low: 26, condition: "cloudy" },
+        { day: "Thu", high: 39, low: 29, condition: "sunny" }
+      ]
+    },
+    ahmedabad: {
+      location: "Ahmedabad, Gujarat",
+      temperature: 33,
+      condition: "Hot",
+      humidity: 50,
+      windSpeed: 12,
+      forecast: [
+        { day: "Today", high: 36, low: 26, condition: "sunny" },
+        { day: "Tomorrow", high: 35, low: 25, condition: "sunny" },
+        { day: "Wed", high: 34, low: 24, condition: "cloudy" },
+        { day: "Thu", high: 37, low: 27, condition: "sunny" }
+      ]
+    },
+    lucknow: {
+      location: "Lucknow, Uttar Pradesh",
+      temperature: 27,
+      condition: "Moderate",
+      humidity: 58,
+      windSpeed: 9,
+      forecast: [
+        { day: "Today", high: 31, low: 21, condition: "sunny" },
+        { day: "Tomorrow", high: 29, low: 20, condition: "cloudy" },
+        { day: "Wed", high: 28, low: 19, condition: "rainy" },
         { day: "Thu", high: 30, low: 21, condition: "sunny" }
       ]
     }
