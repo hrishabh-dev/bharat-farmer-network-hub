@@ -22,11 +22,11 @@ const CropCalendar = () => {
       currentStage: currentMonth >= 5 && currentMonth <= 10 ? "active" : "inactive"
     },
     {
-      crop: "Sugarcane",
+      crop: "Maize",
       icon: <Sprout className="h-4 w-4" />,
-      plantingMonths: [1, 2, 10, 11], // Feb-Mar, Nov-Dec
-      harvestMonths: [11, 0, 1], // Dec-Feb
-      currentStage: "active" // Year-round crop
+      plantingMonths: [5, 6, 7], // Jun-Aug
+      harvestMonths: [9, 10, 11], // Oct-Dec
+      currentStage: currentMonth >= 5 && currentMonth <= 11 ? "active" : "inactive"
     },
     {
       crop: "Cotton",
@@ -34,6 +34,48 @@ const CropCalendar = () => {
       plantingMonths: [3, 4, 5], // Apr-Jun
       harvestMonths: [9, 10, 11], // Oct-Dec
       currentStage: currentMonth >= 3 && currentMonth <= 11 ? "active" : "inactive"
+    },
+    {
+      crop: "Sugarcane",
+      icon: <Sprout className="h-4 w-4" />,
+      plantingMonths: [1, 2, 10, 11], // Feb-Mar, Nov-Dec
+      harvestMonths: [11, 0, 1], // Dec-Feb
+      currentStage: "active" // Year-round crop
+    },
+    {
+      crop: "Soybean",
+      icon: <Sprout className="h-4 w-4" />,
+      plantingMonths: [5, 6, 7], // Jun-Aug
+      harvestMonths: [9, 10], // Oct-Nov
+      currentStage: currentMonth >= 5 && currentMonth <= 10 ? "active" : "inactive"
+    },
+    {
+      crop: "Mustard",
+      icon: <Sprout className="h-4 w-4" />,
+      plantingMonths: [9, 10, 11], // Oct-Dec
+      harvestMonths: [2, 3, 4], // Mar-May
+      currentStage: (currentMonth >= 9 && currentMonth <= 11) || (currentMonth >= 2 && currentMonth <= 4) ? "active" : "inactive"
+    },
+    {
+      crop: "Sunflower",
+      icon: <Sprout className="h-4 w-4" />,
+      plantingMonths: [1, 2, 6, 7], // Feb-Mar, Jul-Aug
+      harvestMonths: [5, 6, 10, 11], // Jun-Jul, Nov-Dec
+      currentStage: (currentMonth >= 1 && currentMonth <= 2) || (currentMonth >= 5 && currentMonth <= 7) || (currentMonth >= 10 && currentMonth <= 11) ? "active" : "inactive"
+    },
+    {
+      crop: "Groundnut",
+      icon: <Sprout className="h-4 w-4" />,
+      plantingMonths: [5, 6, 7], // Jun-Aug
+      harvestMonths: [9, 10, 11], // Oct-Dec
+      currentStage: currentMonth >= 5 && currentMonth <= 11 ? "active" : "inactive"
+    },
+    {
+      crop: "Barley",
+      icon: <Wheat className="h-4 w-4" />,
+      plantingMonths: [10, 11, 0], // Nov-Jan
+      harvestMonths: [3, 4, 5], // Apr-Jun
+      currentStage: (currentMonth >= 10 && currentMonth <= 11) || currentMonth === 0 || (currentMonth >= 3 && currentMonth <= 5) ? "active" : "inactive"
     }
   ];
 
@@ -66,15 +108,15 @@ const CropCalendar = () => {
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="space-y-4">
+        <div className="space-y-3 max-h-96 overflow-y-auto">
           {cropSchedule.map((crop, index) => (
             <div key={index} className="border rounded-lg p-3">
               <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center gap-2">
                   {crop.icon}
-                  <span className="font-semibold">{crop.crop}</span>
+                  <span className="font-semibold text-sm">{crop.crop}</span>
                 </div>
-                <Badge variant={crop.currentStage === "active" ? "default" : "secondary"}>
+                <Badge variant={crop.currentStage === "active" ? "default" : "secondary"} className="text-xs">
                   {crop.currentStage === "active" ? "In Season" : "Off Season"}
                 </Badge>
               </div>
@@ -89,7 +131,7 @@ const CropCalendar = () => {
                     <div key={monthIndex} className="text-center">
                       <div className="font-medium mb-1">{month}</div>
                       {isActive && (
-                        <Badge className={`text-xs ${getStageColor(stage)}`}>
+                        <Badge className={`text-xs px-1 py-0 ${getStageColor(stage)}`}>
                           {stage === "planting" ? "🌱" : stage === "harvest" ? "✂️" : "🌾"}
                         </Badge>
                       )}
@@ -109,7 +151,7 @@ const CropCalendar = () => {
                     <div key={monthIndex} className="text-center">
                       <div className="font-medium mb-1">{month}</div>
                       {isActive && (
-                        <Badge className={`text-xs ${getStageColor(stage)}`}>
+                        <Badge className={`text-xs px-1 py-0 ${getStageColor(stage)}`}>
                           {stage === "planting" ? "🌱" : stage === "harvest" ? "✂️" : "🌾"}
                         </Badge>
                       )}
@@ -120,7 +162,7 @@ const CropCalendar = () => {
             </div>
           ))}
           
-          <div className="mt-4 flex gap-2 text-xs">
+          <div className="mt-4 flex gap-2 text-xs justify-center">
             <div className="flex items-center gap-1">
               <span>🌱</span>
               <span>Planting</span>

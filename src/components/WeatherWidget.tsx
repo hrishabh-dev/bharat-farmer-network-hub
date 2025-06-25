@@ -1,22 +1,107 @@
 
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Cloud, Sun, CloudRain, Wind, Droplets, Thermometer } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Cloud, Sun, CloudRain, Wind, Droplets, Thermometer, MapPin } from 'lucide-react';
 
 const WeatherWidget = () => {
-  const [weather] = useState({
-    location: "Delhi, India",
-    temperature: 28,
-    condition: "Partly Cloudy",
-    humidity: 65,
-    windSpeed: 12,
-    forecast: [
-      { day: "Today", high: 32, low: 22, condition: "sunny" },
-      { day: "Tomorrow", high: 30, low: 20, condition: "cloudy" },
-      { day: "Wed", high: 28, low: 18, condition: "rainy" },
-      { day: "Thu", high: 29, low: 19, condition: "sunny" }
-    ]
-  });
+  const [selectedLocation, setSelectedLocation] = useState("delhi");
+  
+  const locations = [
+    { value: "delhi", label: "Delhi", state: "Delhi" },
+    { value: "mumbai", label: "Mumbai", state: "Maharashtra" },
+    { value: "bangalore", label: "Bangalore", state: "Karnataka" },
+    { value: "hyderabad", label: "Hyderabad", state: "Telangana" },
+    { value: "pune", label: "Pune", state: "Maharashtra" },
+    { value: "ahmedabad", label: "Ahmedabad", state: "Gujarat" },
+    { value: "chennai", label: "Chennai", state: "Tamil Nadu" },
+    { value: "kolkata", label: "Kolkata", state: "West Bengal" },
+    { value: "jaipur", label: "Jaipur", state: "Rajasthan" },
+    { value: "lucknow", label: "Lucknow", state: "Uttar Pradesh" },
+    { value: "kanpur", label: "Kanpur", state: "Uttar Pradesh" },
+    { value: "nagpur", label: "Nagpur", state: "Maharashtra" },
+    { value: "indore", label: "Indore", state: "Madhya Pradesh" },
+    { value: "thane", label: "Thane", state: "Maharashtra" },
+    { value: "bhopal", label: "Bhopal", state: "Madhya Pradesh" },
+    { value: "visakhapatnam", label: "Visakhapatnam", state: "Andhra Pradesh" },
+    { value: "pimpri", label: "Pimpri-Chinchwad", state: "Maharashtra" },
+    { value: "patna", label: "Patna", state: "Bihar" },
+    { value: "vadodara", label: "Vadodara", state: "Gujarat" },
+    { value: "ghaziabad", label: "Ghaziabad", state: "Uttar Pradesh" }
+  ];
+
+  const weatherData = {
+    delhi: {
+      location: "Delhi, India",
+      temperature: 28,
+      condition: "Partly Cloudy",
+      humidity: 65,
+      windSpeed: 12,
+      forecast: [
+        { day: "Today", high: 32, low: 22, condition: "sunny" },
+        { day: "Tomorrow", high: 30, low: 20, condition: "cloudy" },
+        { day: "Wed", high: 28, low: 18, condition: "rainy" },
+        { day: "Thu", high: 29, low: 19, condition: "sunny" }
+      ]
+    },
+    mumbai: {
+      location: "Mumbai, Maharashtra",
+      temperature: 31,
+      condition: "Humid",
+      humidity: 78,
+      windSpeed: 15,
+      forecast: [
+        { day: "Today", high: 33, low: 26, condition: "cloudy" },
+        { day: "Tomorrow", high: 32, low: 25, condition: "rainy" },
+        { day: "Wed", high: 30, low: 24, condition: "rainy" },
+        { day: "Thu", high: 31, low: 25, condition: "cloudy" }
+      ]
+    },
+    bangalore: {
+      location: "Bangalore, Karnataka",
+      temperature: 24,
+      condition: "Pleasant",
+      humidity: 60,
+      windSpeed: 8,
+      forecast: [
+        { day: "Today", high: 27, low: 18, condition: "sunny" },
+        { day: "Tomorrow", high: 26, low: 17, condition: "cloudy" },
+        { day: "Wed", high: 25, low: 16, condition: "sunny" },
+        { day: "Thu", high: 28, low: 19, condition: "sunny" }
+      ]
+    },
+    hyderabad: {
+      location: "Hyderabad, Telangana",
+      temperature: 29,
+      condition: "Warm",
+      humidity: 55,
+      windSpeed: 10,
+      forecast: [
+        { day: "Today", high: 33, low: 23, condition: "sunny" },
+        { day: "Tomorrow", high: 32, low: 22, condition: "sunny" },
+        { day: "Wed", high: 31, low: 21, condition: "cloudy" },
+        { day: "Thu", high: 34, low: 24, condition: "sunny" }
+      ]
+    },
+    pune: {
+      location: "Pune, Maharashtra",
+      temperature: 26,
+      condition: "Moderate",
+      humidity: 62,
+      windSpeed: 9,
+      forecast: [
+        { day: "Today", high: 29, low: 20, condition: "sunny" },
+        { day: "Tomorrow", high: 28, low: 19, condition: "cloudy" },
+        { day: "Wed", high: 27, low: 18, condition: "sunny" },
+        { day: "Thu", high: 30, low: 21, condition: "sunny" }
+      ]
+    }
+  };
+
+  const getCurrentWeather = () => {
+    return weatherData[selectedLocation as keyof typeof weatherData] || weatherData.delhi;
+  };
 
   const getWeatherIcon = (condition: string) => {
     switch (condition) {
@@ -26,6 +111,8 @@ const WeatherWidget = () => {
       default: return <Sun className="h-6 w-6 text-yellow-500" />;
     }
   };
+
+  const weather = getCurrentWeather();
 
   return (
     <Card className="w-full">
@@ -37,6 +124,22 @@ const WeatherWidget = () => {
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
+          <div className="flex items-center gap-2 mb-3">
+            <MapPin className="h-4 w-4 text-gray-500" />
+            <Select value={selectedLocation} onValueChange={setSelectedLocation}>
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Select location" />
+              </SelectTrigger>
+              <SelectContent>
+                {locations.map((location) => (
+                  <SelectItem key={location.value} value={location.value}>
+                    {location.label}, {location.state}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
           <div className="text-center">
             <h3 className="text-lg font-semibold">{weather.location}</h3>
             <div className="flex items-center justify-center gap-2 my-2">
