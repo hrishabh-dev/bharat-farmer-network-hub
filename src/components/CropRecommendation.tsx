@@ -1,9 +1,11 @@
+
 import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
-import { Sprout, Loader2, Lock, AlertCircle, RefreshCw } from 'lucide-react';
+import { Sprout, Loader2, Lock, AlertCircle, RefreshCw, CheckCircle } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
 
 const CropRecommendation = () => {
   const [soilData, setSoilData] = useState({
@@ -20,6 +22,7 @@ const CropRecommendation = () => {
   const [error, setError] = useState<string | null>(null);
   const [isPremiumUser, setIsPremiumUser] = useState(false);
   const [retryCount, setRetryCount] = useState(0);
+  const { toast } = useToast();
 
   const handleInputChange = (field: string, value: string) => {
     setSoilData(prev => ({ ...prev, [field]: value }));
@@ -28,17 +31,93 @@ const CropRecommendation = () => {
 
   const validateInputs = () => {
     const requiredFields = ['nitrogen', 'phosphorus', 'potassium', 'temperature', 'humidity', 'ph', 'rainfall'];
-    return requiredFields.every(field => soilData[field as keyof typeof soilData] !== '');
+    const missingFields = requiredFields.filter(field => !soilData[field as keyof typeof soilData]);
+    
+    if (missingFields.length > 0) {
+      setError(`Please fill in: ${missingFields.join(', ')}`);
+      return false;
+    }
+
+    // Validate ranges
+    const n = parseFloat(soilData.nitrogen);
+    const p = parseFloat(soilData.phosphorus);
+    const k = parseFloat(soilData.potassium);
+    const temp = parseFloat(soilData.temperature);
+    const humidity = parseFloat(soilData.humidity);
+    const ph = parseFloat(soilData.ph);
+    const rainfall = parseFloat(soilData.rainfall);
+
+    if (n < 0 || n > 300) {
+      setError('Nitrogen should be between 0-300 kg/ha');
+      return false;
+    }
+    if (p < 0 || p > 200) {
+      setError('Phosphorus should be between 0-200 kg/ha');
+      return false;
+    }
+    if (k < 0 || k > 300) {
+      setError('Potassium should be between 0-300 kg/ha');
+      return false;
+    }
+    if (temp < -10 || temp > 60) {
+      setError('Temperature should be between -10°C to 60°C');
+      return false;
+    }
+    if (humidity < 0 || humidity > 100) {
+      setError('Humidity should be between 0-100%');
+      return false;
+    }
+    if (ph < 0 || ph > 14) {
+      setError('pH should be between 0-14');
+      return false;
+    }
+    if (rainfall < 0 || rainfall > 3000) {
+      setError('Rainfall should be between 0-3000mm');
+      return false;
+    }
+
+    return true;
+  };
+
+  // Fallback prediction logic when API is unavailable
+  const getFallbackPrediction = (data: typeof soilData) => {
+    const n = parseFloat(data.nitrogen);
+    const p = parseFloat(data.phosphorus);
+    const k = parseFloat(data.potassium);
+    const temp = parseFloat(data.temperature);
+    const humidity = parseFloat(data.humidity);
+    const ph = parseFloat(data.ph);
+    const rainfall = parseFloat(data.rainfall);
+
+    // Simple rule-based prediction
+    if (rainfall > 200 && humidity > 70 && temp > 20 && temp < 35) {
+      if (n > 80 && p > 40 && k > 40) return 'Rice';
+      if (ph > 6.5 && ph < 7.5) return 'Wheat';
+      return 'Maize';
+    } else if (rainfall < 100 && temp > 25) {
+      if (ph > 7) return 'Cotton';
+      return 'Millet';
+    } else if (temp < 25 && rainfall > 100) {
+      if (n > 60) return 'Barley';
+      return 'Peas';
+    } else {
+      if (k > 100) return 'Sugarcane';
+      if (p > 60) return 'Soybean';
+      return 'Groundnut';
+    }
   };
 
   const predictCrop = async (isRetry = false) => {
     if (!isPremiumUser) {
-      alert('This feature is available for premium users only. Please upgrade your account.');
+      toast({
+        title: "Premium Feature",
+        description: "AI-powered crop prediction is available for premium users only. Please upgrade your account.",
+        variant: "default",
+      });
       return;
     }
 
     if (!validateInputs()) {
-      setError('Please fill in all soil parameters');
       return;
     }
 
@@ -50,12 +129,8 @@ const CropRecommendation = () => {
     }
 
     try {
-      console.log('Sending request to crop prediction API...', isRetry ? `(Retry ${retryCount + 1})` : '');
+      console.log('Attempting crop prediction...', isRetry ? `(Retry ${retryCount + 1})` : '');
       
-      // Create a timeout for the request
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 20000); // Increased to 20 seconds
-
       const requestBody = {
         N: parseFloat(soilData.nitrogen),
         P: parseFloat(soilData.phosphorus),
@@ -68,55 +143,67 @@ const CropRecommendation = () => {
 
       console.log('Request payload:', requestBody);
 
+      // Try the API first
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => {
+        controller.abort();
+        console.log('Request timed out after 15 seconds');
+      }, 15000);
+
       const response = await fetch('https://croppredictionapp.onrender.com/predict', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
-          'Access-Control-Allow-Origin': '*'
         },
         body: JSON.stringify(requestBody),
         signal: controller.signal,
-        mode: 'cors'
+        mode: 'cors',
+        credentials: 'omit'
       });
 
       clearTimeout(timeoutId);
-      console.log('Response status:', response.status);
+      console.log('API Response status:', response.status);
 
       if (!response.ok) {
         const errorText = await response.text();
-        console.log('Error response:', errorText);
-        throw new Error(`API returned ${response.status}: ${response.statusText}`);
+        console.log('API Error response:', errorText);
+        throw new Error(`API Error: ${response.status} - ${response.statusText}`);
       }
 
       const result = await response.json();
-      console.log('API response:', result);
+      console.log('API Success response:', result);
       
       const cropName = result.prediction || result.crop || result.recommended_crop || result.result;
       if (cropName) {
         setPrediction(cropName);
         setRetryCount(0);
+        toast({
+          title: "Prediction Successful!",
+          description: `AI recommends growing ${cropName} based on your soil conditions.`,
+          variant: "default",
+        });
       } else {
-        throw new Error('No crop prediction found in response');
+        throw new Error('No crop prediction found in API response');
       }
 
     } catch (error: any) {
-      console.error('Error predicting crop:', error);
+      console.error('API Error:', error);
       
-      let errorMessage = '';
+      // Use fallback prediction when API fails
+      console.log('Using fallback prediction logic...');
+      const fallbackCrop = getFallbackPrediction(soilData);
+      setPrediction(fallbackCrop);
       
-      if (error.name === 'AbortError') {
-        errorMessage = 'Request timed out. The prediction service is taking too long to respond.';
-      } else if (error.message.includes('Failed to fetch') || error.message.includes('NetworkError')) {
-        errorMessage = 'Unable to connect to the prediction service. This could be due to CORS restrictions or the service being temporarily unavailable.';
-      } else if (error.message.includes('CORS')) {
-        errorMessage = 'Cross-origin request blocked. The prediction service may need to allow requests from this domain.';
-      } else {
-        errorMessage = `Prediction failed: ${error.message}`;
-      }
-      
-      setError(errorMessage);
+      setError(`API temporarily unavailable. Using offline prediction: ${fallbackCrop}`);
       setRetryCount(prev => prev + 1);
+      
+      toast({
+        title: "Using Offline Prediction",
+        description: `API is temporarily unavailable. Showing offline prediction: ${fallbackCrop}`,
+        variant: "default",
+      });
+      
     } finally {
       setLoading(false);
     }
@@ -226,21 +313,21 @@ const CropRecommendation = () => {
             </div>
 
             {error && (
-              <div className="bg-red-50 border border-red-200 rounded-lg p-3 mb-4">
+              <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 mb-4">
                 <div className="flex items-start gap-2">
-                  <AlertCircle className="h-4 w-4 text-red-500 mt-0.5 flex-shrink-0" />
+                  <AlertCircle className="h-4 w-4 text-yellow-600 mt-0.5 flex-shrink-0" />
                   <div className="flex-1">
-                    <p className="text-sm text-red-800 mb-2">{error}</p>
-                    {retryCount < 3 && (
+                    <p className="text-sm text-yellow-800 mb-2">{error}</p>
+                    {retryCount < 3 && !error.includes('offline prediction') && (
                       <Button
                         onClick={retryPrediction}
                         variant="outline"
                         size="sm"
-                        className="text-red-600 border-red-300 hover:bg-red-50"
+                        className="text-yellow-600 border-yellow-300 hover:bg-yellow-50"
                         disabled={loading}
                       >
                         <RefreshCw className="h-3 w-3 mr-2" />
-                        Try Again
+                        Try API Again
                       </Button>
                     )}
                   </div>
@@ -273,10 +360,16 @@ const CropRecommendation = () => {
 
             {prediction && (
               <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-                <h4 className="font-semibold text-green-800 mb-2">Recommended Crop:</h4>
+                <div className="flex items-center gap-2 mb-2">
+                  <CheckCircle className="h-5 w-5 text-green-600" />
+                  <h4 className="font-semibold text-green-800">Recommended Crop:</h4>
+                </div>
                 <Badge className="bg-green-600 text-white text-sm">
                   {prediction}
                 </Badge>
+                <p className="text-sm text-green-700 mt-2">
+                  This recommendation is based on your soil nutrient levels and environmental conditions.
+                </p>
               </div>
             )}
 
