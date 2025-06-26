@@ -131,13 +131,14 @@ const CropRecommendation = () => {
     try {
       console.log('Attempting crop prediction...', isRetry ? `(Retry ${retryCount + 1})` : '');
       
+      // Updated request payload to match Flask API exactly
       const requestBody = {
         N: parseFloat(soilData.nitrogen),
         P: parseFloat(soilData.phosphorus),
         K: parseFloat(soilData.potassium),
         temperature: parseFloat(soilData.temperature),
         humidity: parseFloat(soilData.humidity),
-        ph: parseFloat(soilData.ph),
+        pH: parseFloat(soilData.ph), // Note: uppercase H to match Flask
         rainfall: parseFloat(soilData.rainfall)
       };
 
@@ -147,8 +148,8 @@ const CropRecommendation = () => {
       const controller = new AbortController();
       const timeoutId = setTimeout(() => {
         controller.abort();
-        console.log('Request timed out after 15 seconds');
-      }, 15000);
+        console.log('Request timed out after 10 seconds');
+      }, 10000);
 
       const response = await fetch('https://croppredictionapp.onrender.com/predict', {
         method: 'POST',
@@ -164,17 +165,18 @@ const CropRecommendation = () => {
 
       clearTimeout(timeoutId);
       console.log('API Response status:', response.status);
+      console.log('API Response headers:', Object.fromEntries(response.headers.entries()));
 
       if (!response.ok) {
         const errorText = await response.text();
         console.log('API Error response:', errorText);
-        throw new Error(`API Error: ${response.status} - ${response.statusText}`);
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
       }
 
       const result = await response.json();
       console.log('API Success response:', result);
       
-      const cropName = result.prediction || result.crop || result.recommended_crop || result.result;
+      const cropName = result.prediction;
       if (cropName) {
         setPrediction(cropName);
         setRetryCount(0);
@@ -190,17 +192,25 @@ const CropRecommendation = () => {
     } catch (error: any) {
       console.error('API Error:', error);
       
+      if (error.name === 'AbortError') {
+        console.log('Request was aborted due to timeout');
+      }
+      
       // Use fallback prediction when API fails
       console.log('Using fallback prediction logic...');
       const fallbackCrop = getFallbackPrediction(soilData);
       setPrediction(fallbackCrop);
       
-      setError(`API temporarily unavailable. Using offline prediction: ${fallbackCrop}`);
+      const errorMessage = error.name === 'AbortError' 
+        ? 'Request timed out' 
+        : error.message || 'Network error';
+      
+      setError(`API temporarily unavailable (${errorMessage}). Using offline prediction: ${fallbackCrop}`);
       setRetryCount(prev => prev + 1);
       
       toast({
         title: "Using Offline Prediction",
-        description: `API is temporarily unavailable. Showing offline prediction: ${fallbackCrop}`,
+        description: `API issue detected. Showing offline prediction: ${fallbackCrop}`,
         variant: "default",
       });
       
