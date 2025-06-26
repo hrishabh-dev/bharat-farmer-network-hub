@@ -1,10 +1,9 @@
-
 import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
-import { Sprout, Loader2, Lock, AlertCircle } from 'lucide-react';
+import { Sprout, Loader2, Lock, AlertCircle, RefreshCw } from 'lucide-react';
 
 const CropRecommendation = () => {
   const [soilData, setSoilData] = useState({
@@ -20,10 +19,11 @@ const CropRecommendation = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isPremiumUser, setIsPremiumUser] = useState(false);
+  const [retryCount, setRetryCount] = useState(0);
 
   const handleInputChange = (field: string, value: string) => {
     setSoilData(prev => ({ ...prev, [field]: value }));
-    setError(null); // Clear error when user starts typing
+    setError(null);
   };
 
   const validateInputs = () => {
@@ -31,7 +31,7 @@ const CropRecommendation = () => {
     return requiredFields.every(field => soilData[field as keyof typeof soilData] !== '');
   };
 
-  const predictCrop = async () => {
+  const predictCrop = async (isRetry = false) => {
     if (!isPremiumUser) {
       alert('This feature is available for premium users only. Please upgrade your account.');
       return;
@@ -44,47 +44,58 @@ const CropRecommendation = () => {
 
     setLoading(true);
     setError(null);
-    setPrediction(null);
+    if (!isRetry) {
+      setPrediction(null);
+      setRetryCount(0);
+    }
 
     try {
-      console.log('Sending request to crop prediction API...');
+      console.log('Sending request to crop prediction API...', isRetry ? `(Retry ${retryCount + 1})` : '');
       
       // Create a timeout for the request
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 15000); // 15 second timeout
+      const timeoutId = setTimeout(() => controller.abort(), 20000); // Increased to 20 seconds
+
+      const requestBody = {
+        N: parseFloat(soilData.nitrogen),
+        P: parseFloat(soilData.phosphorus),
+        K: parseFloat(soilData.potassium),
+        temperature: parseFloat(soilData.temperature),
+        humidity: parseFloat(soilData.humidity),
+        ph: parseFloat(soilData.ph),
+        rainfall: parseFloat(soilData.rainfall)
+      };
+
+      console.log('Request payload:', requestBody);
 
       const response = await fetch('https://croppredictionapp.onrender.com/predict', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
+          'Access-Control-Allow-Origin': '*'
         },
-        body: JSON.stringify({
-          N: parseFloat(soilData.nitrogen),
-          P: parseFloat(soilData.phosphorus),
-          K: parseFloat(soilData.potassium),
-          temperature: parseFloat(soilData.temperature),
-          humidity: parseFloat(soilData.humidity),
-          ph: parseFloat(soilData.ph),
-          rainfall: parseFloat(soilData.rainfall)
-        }),
-        signal: controller.signal
+        body: JSON.stringify(requestBody),
+        signal: controller.signal,
+        mode: 'cors'
       });
 
       clearTimeout(timeoutId);
-
       console.log('Response status:', response.status);
 
       if (!response.ok) {
+        const errorText = await response.text();
+        console.log('Error response:', errorText);
         throw new Error(`API returned ${response.status}: ${response.statusText}`);
       }
 
       const result = await response.json();
       console.log('API response:', result);
       
-      const cropName = result.prediction || result.crop || result.recommended_crop;
+      const cropName = result.prediction || result.crop || result.recommended_crop || result.result;
       if (cropName) {
         setPrediction(cropName);
+        setRetryCount(0);
       } else {
         throw new Error('No crop prediction found in response');
       }
@@ -92,16 +103,27 @@ const CropRecommendation = () => {
     } catch (error: any) {
       console.error('Error predicting crop:', error);
       
+      let errorMessage = '';
+      
       if (error.name === 'AbortError') {
-        setError('Request timed out. The prediction service may be temporarily unavailable.');
-      } else if (error.message.includes('Failed to fetch')) {
-        setError('Unable to connect to prediction service. Please check your internet connection or try again later.');
+        errorMessage = 'Request timed out. The prediction service is taking too long to respond.';
+      } else if (error.message.includes('Failed to fetch') || error.message.includes('NetworkError')) {
+        errorMessage = 'Unable to connect to the prediction service. This could be due to CORS restrictions or the service being temporarily unavailable.';
+      } else if (error.message.includes('CORS')) {
+        errorMessage = 'Cross-origin request blocked. The prediction service may need to allow requests from this domain.';
       } else {
-        setError(`Prediction failed: ${error.message}`);
+        errorMessage = `Prediction failed: ${error.message}`;
       }
+      
+      setError(errorMessage);
+      setRetryCount(prev => prev + 1);
     } finally {
       setLoading(false);
     }
+  };
+
+  const retryPrediction = () => {
+    predictCrop(true);
   };
 
   const seasonalRecommendations = {
@@ -204,14 +226,30 @@ const CropRecommendation = () => {
             </div>
 
             {error && (
-              <div className="bg-red-50 border border-red-200 rounded-lg p-3 mb-4 flex items-start gap-2">
-                <AlertCircle className="h-4 w-4 text-red-500 mt-0.5 flex-shrink-0" />
-                <p className="text-sm text-red-800">{error}</p>
+              <div className="bg-red-50 border border-red-200 rounded-lg p-3 mb-4">
+                <div className="flex items-start gap-2">
+                  <AlertCircle className="h-4 w-4 text-red-500 mt-0.5 flex-shrink-0" />
+                  <div className="flex-1">
+                    <p className="text-sm text-red-800 mb-2">{error}</p>
+                    {retryCount < 3 && (
+                      <Button
+                        onClick={retryPrediction}
+                        variant="outline"
+                        size="sm"
+                        className="text-red-600 border-red-300 hover:bg-red-50"
+                        disabled={loading}
+                      >
+                        <RefreshCw className="h-3 w-3 mr-2" />
+                        Try Again
+                      </Button>
+                    )}
+                  </div>
+                </div>
               </div>
             )}
 
             <Button
-              onClick={predictCrop}
+              onClick={() => predictCrop(false)}
               className="w-full mb-4"
               disabled={loading || !isPremiumUser}
             >
