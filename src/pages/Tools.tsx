@@ -5,6 +5,7 @@ import WeatherWidget from '@/components/WeatherWidget';
 import QuickTools from '@/components/QuickTools';
 import CropCalendar from '@/components/CropCalendar';
 import CropRecommendation from '@/components/CropRecommendation';
+import MarketPrices from '@/components/MarketPrices';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Calculator, Calendar, CloudSun, BookOpen, Phone, MapPin } from 'lucide-react';
@@ -51,6 +52,11 @@ const Tools = () => {
             <CropRecommendation />
             <CropCalendar />
           </div>
+        </div>
+
+        {/* Market Prices Section */}
+        <div className="mb-8">
+          <MarketPrices />
         </div>
 
         {/* Quick Access Section */}
