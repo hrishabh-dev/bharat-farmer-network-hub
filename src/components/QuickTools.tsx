@@ -111,6 +111,36 @@ const QuickTools = () => {
           </div>
         );
 
+      case 'irrigation':
+        return (
+          <div className="space-y-4">
+            <Input placeholder="Field area (sq meters)" type="number" id="irrigationArea" />
+            <Input placeholder="Crop water need (mm/day)" type="number" id="waterNeed" />
+            <Input placeholder="Number of days" type="number" id="days" />
+            <Button 
+              onClick={() => {
+                const area = parseFloat((document.getElementById('irrigationArea') as HTMLInputElement).value);
+                const waterNeed = parseFloat((document.getElementById('waterNeed') as HTMLInputElement).value);
+                const days = parseFloat((document.getElementById('days') as HTMLInputElement).value);
+                
+                if (area && waterNeed && days) {
+                  const result = calculateIrrigation(area, waterNeed, days);
+                  setResults({ waterRequired: result });
+                }
+              }}
+              className="w-full"
+            >
+              Calculate
+            </Button>
+            {results.waterRequired && (
+              <div className="bg-green-50 p-3 rounded">
+                <p>Water Required: {results.waterRequired.toFixed(2)} liters</p>
+                <p>Water Required: {(results.waterRequired / 1000).toFixed(2)} cubic meters</p>
+              </div>
+            )}
+          </div>
+        );
+
       default:
         return (
           <p className="text-gray-600 text-center py-4">
